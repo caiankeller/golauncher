@@ -22,8 +22,8 @@ Built for keyboard-first Linux workflows (especially tiling WMs), `golauncher` g
 
 ## Installation
 ```bash
-git clone https://github.com/caiankeller/launcher.git
-cd launcher
+git clone https://github.com/caiankeller/golauncher.git
+cd golauncher
 make
 sudo make install
 ```
