@@ -1,0 +1,17 @@
+# Binary
+golauncher
+
+# Log files
+*.log
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+# I love MacOS
+.DS_Store 
+Thumbs.db
