@@ -4,6 +4,8 @@ A minimalist application launcher TUI written in Go with Charm libraries (`bubbl
 
 Built for keyboard-first Linux workflows (especially tiling WMs), `golauncher` gives you a fast searchable app menu from your terminal.
 
+![golauncher](./repo/image.png)
+
 ## Features
 - Scans `.desktop` entries from:
   - `/usr/share/applications`
