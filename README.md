@@ -2,7 +2,7 @@
 
 A minimalist application launcher TUI written in Go with Charm libraries (`bubbletea`, `bubbles`, `lipgloss`).
 
-Built for keyboard-first Linux workflows (especially tiling WMs), `golauncher` gives you a fast searchable app menu from your terminal.
+Built for keyboard-first Linux workflows (especially tiling WMs), `golauncher` gives you a fast searchable app menu from your terminal. No images, no blucky UI, no bs; so simple that it can't be labeled ugly.
 
 ![golauncher](./repo/image.png)
 
@@ -44,14 +44,14 @@ Run:
 golauncher
 ```
 
-Available make targets:
+Press `/` to start search, and type to filter applications, then press `Enter` to launch.
 
+#### Available make targets
 - `make build` - build the binary
 - `make install` - build and install to `/usr/local/bin`
 - `make uninstall` - remove from `/usr/local/bin`
 - `make clean` - remove local build artifact
 
-Start typing to filter applications, then press `Enter` to launch.
 
 ## Hyprland example
 
