@@ -16,31 +16,26 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-// Application directories to scan for .desktop files.
+// application directories to scan for .desktop files
 var appDirs = []string{
 	"/usr/share/applications",
 	"/var/lib/flatpak/exports/share/applications",
 }
 
-// Colors.
 var (
-	white = lipgloss.Color("#EBE8E2")
-	gray  = lipgloss.Color("#444444")
-	black = lipgloss.Color("#000000")
+	white = lipgloss.Color("1")
+	gray  = lipgloss.Color("3")
 )
 
-// Styles.
 var (
-	windowStyle   = lipgloss.NewStyle().Padding(1, 2).Background(black)
+	windowStyle   = lipgloss.NewStyle().Padding(1, 2)
 	selectedStyle = lipgloss.NewStyle().Foreground(white).Bold(true)
 	normalStyle   = lipgloss.NewStyle().Foreground(gray)
 	hatchedStyle  = lipgloss.NewStyle().Foreground(gray)
 )
 
-// -------------------------------------------------------------------
-// Item
-// -------------------------------------------------------------------
 
+// item
 type item struct {
 	name    string
 	command string
@@ -48,10 +43,7 @@ type item struct {
 
 func (i item) FilterValue() string { return i.name }
 
-// -------------------------------------------------------------------
-// Item delegate
-// -------------------------------------------------------------------
-
+// item delegate
 type itemDelegate struct{}
 
 func (d itemDelegate) Height() int                               { return 1 }
@@ -71,10 +63,8 @@ func (d itemDelegate) Render(w io.Writer, m list.Model, index int, listItem list
 	}
 }
 
-// -------------------------------------------------------------------
-// Model
-// -------------------------------------------------------------------
 
+// model
 type model struct {
 	list list.Model
 }
@@ -113,13 +103,11 @@ func (m model) View() string {
 	)
 }
 
-// -------------------------------------------------------------------
 // Desktop entry parsing
-// -------------------------------------------------------------------
 
 // parseDesktopEntry extracts the application name and exec command from
 // a .desktop file. It respects NoDisplay and hidden entries, returning
-// empty strings when the entry should be skipped.
+// empty strings when the entry should be skipped
 func parseDesktopEntry(path string) (name, cmd string) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -133,7 +121,7 @@ func parseDesktopEntry(path string) (name, cmd string) {
 	for sc.Scan() {
 		line := strings.TrimSpace(sc.Text())
 
-		// Track section headers — only read [Desktop Entry].
+		// tracks section headers, only read [Desktop Entry]
 		if strings.HasPrefix(line, "[") {
 			inDesktopEntry = line == "[Desktop Entry]"
 			continue
@@ -157,7 +145,7 @@ func parseDesktopEntry(path string) (name, cmd string) {
 		case "Exec":
 			if cmd == "" {
 				cmd = value
-				// Strip field codes (%f, %F, %u, %U, etc.) and stray quotes.
+				// strips field codes (%f, %F, %u, %U, etc.) and stray quotes
 				if i := strings.Index(cmd, " %"); i != -1 {
 					cmd = cmd[:i]
 				}
@@ -173,7 +161,7 @@ func parseDesktopEntry(path string) (name, cmd string) {
 }
 
 // scanApplications walks application directories and returns a sorted
-// slice of discovered items, deduplicating by name.
+// slice of discovered items, deduplicating by name
 func scanApplications() []list.Item {
 	seen := make(map[string]struct{})
 	var items []list.Item
@@ -204,12 +192,10 @@ func scanApplications() []list.Item {
 	return items
 }
 
-// -------------------------------------------------------------------
-// Process launching
-// -------------------------------------------------------------------
+// process launching
 
 // launchDetached starts a command in a new session, fully detached
-// from the current terminal so it survives after the launcher exits.
+// from the current terminal so it survives after the launcher exits
 func launchDetached(command string) {
 	cmd := exec.Command("sh", "-c", command)
 	cmd.Stdin = nil
@@ -220,12 +206,10 @@ func launchDetached(command string) {
 	_ = cmd.Start()
 }
 
-// -------------------------------------------------------------------
-// Single-instance lock
-// -------------------------------------------------------------------
+// single-instance lock
 
-// acquireLock ensures only one instance of the launcher is running.
-// Returns a cleanup function that must be deferred by the caller.
+// acquireLock ensures only one instance of the launcher is running
+// returns a cleanup function that must be deferred by the caller
 func acquireLock() (cleanup func(), err error) {
 	const lockPath = "/tmp/golauncher.lock"
 
@@ -246,10 +230,7 @@ func acquireLock() (cleanup func(), err error) {
 	}, nil
 }
 
-// -------------------------------------------------------------------
-// Entrypoint
-// -------------------------------------------------------------------
-
+// entrypoint
 func main() {
 	unlock, err := acquireLock()
 	if err != nil {
