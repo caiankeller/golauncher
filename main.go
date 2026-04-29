@@ -22,9 +22,11 @@ var appDirs = []string{
 	"/var/lib/flatpak/exports/share/applications",
 }
 
+// this colors kinda suck in my terminal color
+// maybe a way to customize them in the future?
 var (
-	white = lipgloss.Color("1")
-	gray  = lipgloss.Color("3")
+	white = lipgloss.Color("7")
+	gray  = lipgloss.Color("15")
 )
 
 var (
